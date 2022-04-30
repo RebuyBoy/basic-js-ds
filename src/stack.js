@@ -23,12 +23,6 @@ class Stack {
   }
 }
 
-const stack = new Stack();
-console.log(stack.push(1));
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.pop());
-
 module.exports = {
   Stack
 };
