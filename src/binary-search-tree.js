@@ -92,7 +92,59 @@ class BinarySearchTree {
     return null;
   }
 
+
   remove(data) {
+    if (!this.has(data)) {
+      return;
+    }
+    let curr = this.head;
+    let parent = curr;
+    while (curr !== null) {
+      if (data === curr.data) {
+        break;
+      }
+      parent = curr;
+      if (data < curr.data) {
+        curr = curr.left;
+      } else {
+        curr = curr.right;
+      }
+    }
+    if (curr.left === null && curr.right === null) {
+      if (curr === this.head) {
+        this.head = null;
+        return;
+      }
+      parent.left === curr ? parent.left = null : parent.right = null;
+    }
+    else if (curr.left === null) {
+      if (curr === this.head) {
+        this.head = this.head.right;
+        return;
+      }
+      parent.left === curr ? parent.left = curr.right : parent.right = curr.right;
+    }
+    else if (curr.right === null) {
+      if (curr === this.head) {
+        this.head = this.head.left;
+        return;
+      }
+      parent.left === curr ? parent.left = curr.left : parent.right = curr.left;
+    } else {
+      if (curr === this.head) {
+        let curr = this.head.left;
+        let parent = curr;
+        while (curr.right !== null) {
+          parent = curr;
+          curr = curr.right;
+        }
+        parent.right = null;
+        this.head.data = curr.data;
+        return;
+      }
+      parent.left = curr.left;
+      parent.left.right = curr.right;
+    }
   }
 
   min() {
@@ -117,19 +169,6 @@ class BinarySearchTree {
     return curr.data;
   }
 }
-// const tree = new BinarySearchTree();
-
-// console.log(tree.root());
-// tree.add(15);
-// tree.add(25);
-// tree.add(10);
-// tree.add(5);
-// console.log(tree.has(14));
-// console.log(tree.has(51));
-// console.log(tree.find(25));
-// console.log(tree.has(51));
-// console.log(tree.min());
-
 module.exports = {
   BinarySearchTree
 };
