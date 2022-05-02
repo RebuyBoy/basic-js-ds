@@ -1,10 +1,6 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-/**
- * Implement the Stack with a given interface via array.
- *
- * @example
- */
+
 class Stack {
   constructor() {
     this.arr = [];
