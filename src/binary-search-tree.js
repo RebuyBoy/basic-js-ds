@@ -26,7 +26,6 @@ const { Node } = require('../extensions/list-tree.js');
 class BinarySearchTree {
   constructor() {
     this.head = null;
-    this.size = 0;
   }
 
   root() {
@@ -35,9 +34,8 @@ class BinarySearchTree {
 
   add(data) {
     let newNode = new Node(data);
-    if (this.size === 0) {
+    if (this.head === null) {
       this.head = newNode;
-      this.size++;
       return data;
     } else {
       let curr = this.head;
@@ -45,14 +43,12 @@ class BinarySearchTree {
         if (data < curr.data) {
           if (curr.left === null) {
             curr.left = newNode;
-            this.size++;
             return data;
           } else
             curr = curr.left;
         } else if (data > curr.data) {
           if (curr.right === null) {
             curr.right = newNode;
-            this.size++;
             return data;
           } else {
             curr = curr.right;
@@ -94,15 +90,9 @@ class BinarySearchTree {
 
 
   remove(data) {
-    if (!this.has(data)) {
-      return;
-    }
     let curr = this.head;
-    let parent = curr;
-    while (curr !== null) {
-      if (data === curr.data) {
-        break;
-      }
+    let parent = null;
+    while (curr !== null && curr.data !== data) {
       parent = curr;
       if (data < curr.data) {
         curr = curr.left;
@@ -110,6 +100,10 @@ class BinarySearchTree {
         curr = curr.right;
       }
     }
+    if (curr === null) {
+      return;
+    }
+
     if (curr.left === null && curr.right === null) {
       if (curr === this.head) {
         this.head = null;
@@ -130,20 +124,27 @@ class BinarySearchTree {
         return;
       }
       parent.left === curr ? parent.left = curr.left : parent.right = curr.left;
+
+      //  // find its inorder successor node
+      //  Node successor = getMinimumKey(curr.right);
+
+      //  // store successor value
+      //  int val = successor.data;
+
+      //  // recursively delete the successor. Note that the successor
+      //  // will have at most one child (right child)
+      //  deleteNode(root, successor.data);
+
+      //  // copy value of the successor to the current node
+      //  curr.data = val;
     } else {
-      if (curr === this.head) {
-        let curr = this.head.left;
-        let parent = curr;
-        while (curr.right !== null) {
-          parent = curr;
-          curr = curr.right;
-        }
-        parent.right = null;
-        this.head.data = curr.data;
-        return;
+      let tmp = curr.left;
+      while (tmp.right !== null) {
+        tmp = tmp.right;
       }
-      parent.left = curr.left;
-      parent.left.right = curr.right;
+      const maxVal = tmp.data;
+      this.remove(maxVal);
+      curr.data = maxVal;
     }
   }
 
@@ -169,6 +170,33 @@ class BinarySearchTree {
     return curr.data;
   }
 }
+const tree = new BinarySearchTree();
+
+tree.add(9);
+tree.add(14);
+tree.add(2);
+tree.add(6);
+tree.add(128);
+tree.add(8);
+tree.add(31);
+tree.add(54);
+tree.add(1);
+tree.remove(2);
+tree.remove(9);
+tree.remove(14);
+tree.remove(6);
+tree.remove(128);
+tree.remove(8);
+tree.remove(31);
+tree.remove(54);
+tree.remove(1);
+console.log();
+// console.log(tree.has(14));
+// console.log(tree.has(51));
+// console.log(tree.find(25));
+// console.log(tree.has(51));
+// console.log(tree.min());
+
 module.exports = {
   BinarySearchTree
 };
